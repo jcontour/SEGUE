@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Segue</title>
+		<meta charset="utf-8" />
+	    <meta name="format-detection" content="telephone=no">
+	    <meta name="msapplication-tap-highlight" content="no">
+	    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+		<!-- <link rel="stylesheet" href="css/normalize.min.css"> -->
+		<link rel="stylesheet" href="style.css">
+	</head>
+	<body>
+		<div id="container">
+			<div id="search">
+				<input id="search-box" type="text" placeholder="Search for articles by keyword"/>
+				<button id="search-button">OK</button>
+			</div>
+			<div id="edge-container">
+
+			</div>
+		</div>
+		<div id="article-container">
+			
+		</div>
+
+
+		<!-- ARTICLE CONTAINER TEMPLATE -->
+		<script type="text/html" id="tpl-articles">
+			<% for(var i=0; i<data.results.length; i++) { %>
+				<div class="article-item" id="<%= data.results[i].id %>">
+					<p>
+						<!-- <a href="<%= data.results[i].web_url%>" target="_blank"> -->
+							<p><%= data.results[i].headline.main %></p>
+							<p><%= data.results[i].snippet %></p>
+						<!-- </a> -->
+					</p>
+				</div>
+			<% } %>
+		</script>
+
+		<!-- CONCEPT NET CONTAINER TEMPLATE -->
+		<script type="text/html" id="tpl-edges">
+			<div class="edge-item" id="<%= data.results.id %>">
+				<p>
+					<p><%= data.results.id %></p>
+					<p><%= data.results.surfaceText %></p>
+				</p>
+			</div>
+		</script>		
+
+
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/underscore.min.js"></script>
+		<script type="text/javascript" src="js/main.js"></script>
+	</body>
+</html>
