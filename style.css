@@ -1,32 +1,118 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:700,300,100|Roboto+Slab:300);
+
+
 html, body {
 	margin: 0;
 	padding: 0;
+	background-color: #0C152E;
+	color: white;
+	font-family: Roboto;
+	font-size: 1em;
+}
+
+#search {
+	margin: 10px;
+	position: relative;
+	z-index: 1;
+}
+
+#graph{
+	width: calc(75vw - 40px);
+	height: calc(100vh - 62px);
+	border: 1px solid white;
+	position: absolute;
+	padding: 30px 20px;
+	left: 0;
+	top: 0;
+	z-index: 0;
+	overflow: scroll;
+}
+
+#display-container {
+	width: calc(75vw - 40px);
+	height: calc(100vh - 62px);
+	border: 1px solid white;
+	position: absolute;
+	padding: 30px 20px;
+	left: 0;
+	top: 0;
+	z-index: 0;
+	overflow: scroll;
+}
+
+.display-name{
+	display: inline-block;
+}
+
+.open-link{
+	display: inline-block;
 }
 
 #article-container {
-	width: calc(50vw - 2px);
-	height: calc(100vh - 2px);
-	border: 1px solid black;
+	width: calc(25vw - 4px);
+	height: calc(50vh - 4px);
+	border: 2px solid white;
 	position: absolute;
 	right: 0;
 	top: 0;
 	overflow: scroll;
 }
 
-.article-item{
-	border: 1px solid red;
+.article-item, .edge-item {
+	border: 1px solid white;
+	width: calc(100% - 20px);
+	padding: 10px;
+}
+
+.article-title {
+	font-weight: 300;
+	letter-spacing: 2px;
+	font-family: "Roboto Slab";
+	text-transform: uppercase;
+	font-size: 10pt;
+}
+
+.article-blurb {
+	font-size: 8pt;
+	font-weight: 100;
 }
 
 #edge-container{
-	width: calc(50vw - 2px);
-	height: calc(100vh - 20px);
-	border: 1px solid black;
+	width: calc(25vw - 4px);
+	height: calc(50vh - 4px);
+	border: 2px solid white;
 	position: absolute;
-	left: 0;
+	right: 0;
 	bottom: 0;
 	overflow: scroll;
 }
 
-.edge-item {
-	border: 1px solid blue;
+.nyt {
+	fill: #00C189;
+}
+
+.cn {
+	fill: #E3594B;
+}
+
+.node circle {
+	position: relative;
+	z-index: 1;
+}
+
+.link {
+  fill: none;
+  stroke: white;
+  stroke-width: 0.5px;
+  position: relative;
+  z-index: 0;
+}
+
+.node text {
+	color: white;
+	font-weight: 300;
+	font-family: Roboto;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	font-size: 10px;
 }

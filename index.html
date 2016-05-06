@@ -10,18 +10,15 @@
 		<link rel="stylesheet" href="style.css">
 	</head>
 	<body>
-		<div id="container">
-			<div id="search">
-				<input id="search-box" type="text" placeholder="Search for articles by keyword"/>
-				<button id="search-button">OK</button>
-			</div>
-			<div id="edge-container">
+		<div id="search">
+			<input id="search-box" type="text" placeholder="Search for articles by keyword"/>
+			<button id="search-button">OK</button>
+		</div>
 
-			</div>
-		</div>
-		<div id="article-container">
-			
-		</div>
+		<!-- <div id="display-container"> </div> -->
+		<div id="graph"> </div>
+		<div id="edge-container"> </div>
+		<div id="article-container"> </div>
 
 
 		<!-- ARTICLE CONTAINER TEMPLATE -->
@@ -30,8 +27,8 @@
 				<div class="article-item" id="<%= data.results[i].id %>">
 					<p>
 						<!-- <a href="<%= data.results[i].web_url%>" target="_blank"> -->
-							<p><%= data.results[i].headline.main %></p>
-							<p><%= data.results[i].snippet %></p>
+							<p class="article-title"><%= data.results[i].headline.main %></p>
+							<p class="article-blurb"><%= data.results[i].snippet %></p>
 						<!-- </a> -->
 					</p>
 				</div>
@@ -40,17 +37,40 @@
 
 		<!-- CONCEPT NET CONTAINER TEMPLATE -->
 		<script type="text/html" id="tpl-edges">
-			<div class="edge-item" id="<%= data.results.id %>">
-				<p>
-					<p><%= data.results.id %></p>
-					<p><%= data.results.surfaceText %></p>
-				</p>
-			</div>
+			<% for(var i=0; i<data.results.length; i++) { %>
+
+				<div class="edge-item" id="<%= data.results[i].id %>">
+					<p>
+						<p class="article-title"><%= data.results[i].id %></p>
+						<p class="article-blurb"><%= data.results[i].surfaceText %></p>
+					</p>
+				</div>
+			<% } %>
 		</script>		
+
+		<!-- DISPLAYING STUFF TEMPLATE -->
+		<script type="text/html" id="tpl-display">
+			<% for(var i=0; i<data.results.length; i++) { %>
+
+				<div class="display <%= data.results[i].type %>" 
+					 data-type="<%= data.results[i].type %>"
+					 data-search="<%= data.results[i].searchTerm %>" 
+					 data-id="<%= data.results[i].id %>" 
+					 data-parent="<%= data.results[i].parent %>">
+
+					<p class="display-name"> <%= data.results[i].name %> </p>
+					<% if (data.results[i].type == "nyt"){ %>
+						<div class="open-link" data-url="<%= data.results[i].url %>">Open Article</div>
+					<% } %>
+				</div>
+			<% } %>
+		</script>
 
 
 		<script type="text/javascript" src="js/jquery.min.js"></script>
-		<script type="text/javascript" src="js/underscore.min.js"></script>
+		<script type="text/javascript" src="js/d3.min.js"></script>
+		<script type="text/javascript" src="js/underscore-min.js"></script>
 		<script type="text/javascript" src="js/main.js"></script>
+		<!-- <script type="text/javascript" src="js/main1.js"></script> -->
 	</body>
 </html>
