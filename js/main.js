@@ -151,7 +151,7 @@ app.main = (function(){
 	    var result, p; 
 	    
 	    for (p in data) {
-	        if( data.hasOwnProperty(p) && typeof data[p] === 'object' ) {
+	        if( data.hasOwnProperty(p) && typeof data[p] === 'object' && p != 'parent') {
 	            result = insertById(data[p], id, children);
 	            if(result){
 	                return result;
