@@ -129,9 +129,14 @@ app.main = (function(){
 		}
 
 		console.log("graph data ", graphData, "id to find ", clickedId, "child data ", children);
-		var updatedData = insertById(graphData, clickedId, children);
-		console.log("update graph data ", graphData)
-		graph.update(updatedData);
+		
+		insertById(graphData, clickedId, children, function(updated){
+			console.log("updated data", updated)
+			graph.setup(updated)
+		});
+		// console.log("update graph data ", graphData)
+		
+		// graph.update(updatedData);
 	
 		// render('display', 'display-container', 'replace', 
 		// 	{ data: {
@@ -142,22 +147,35 @@ app.main = (function(){
 		attachEvents();
 	}
 
-	var insertById = function(data, id, children) {
-	    //Early return
-	    if( data.id === id ){
+	function insertById(data, id, children, callback){
+		console.log("data id", data.id, "clicked id ", id);
+	      
+		//Early return
+	    if( data.id == id ){
+	      
 	      data['children'] = children;
+	      
+	      console.log("inserted children ", data);
+	      
+	      callback(data);
+
 	      return data;
 	    }
+
 	    var result, p; 
 	    
 	    for (p in data) {
 	        if( data.hasOwnProperty(p) && typeof data[p] === 'object' && p != 'parent') {
-	            result = insertById(data[p], id, children);
+	        	console.log("looking into data p ", data[p]);
+
+	            result = insertById(data[p], id, children, callback);
+	            
 	            if(result){
 	                return result;
 	            }
 	        }
 	    }
+
 	    return result;
 	}
 
@@ -168,15 +186,19 @@ app.main = (function(){
 	var Graph = function(){
 
 		var obj = {};
+		var w = $('#graph').width()
+		var h = $('#graph').height()
+		console.log(w, h)
 
 		var margin = { top: 20, right: 20, bottom: 20, left: 20 };
-		var width = 900 - margin.left - margin.right;
-		var height = 600 - margin.top - margin.bottom;                
+		var width = w - margin.left - margin.right;
+		var height = h - margin.top - margin.bottom;                
 		var svg, graph;
 		var cluster;
 		var diagonal;
 
 		obj.setup = function(dataset){
+			$('#graph').empty();
 
 			cluster = d3.layout.cluster()
     			.size([height, width - 160]);
@@ -196,6 +218,8 @@ app.main = (function(){
 		}
 
 		obj.update = function(dataset){
+			graph.empty();
+
 			var graphingData = dataset
 			// console.log("graph data ", JSON.stringify(dataset))
 
@@ -216,7 +240,7 @@ app.main = (function(){
 
 			node.enter().append("g")
 				.attr("class", "node")
-				.attr("transform", function(d) { return "translate(" + (d.y + 100) + "," + d.x + ")"; })
+				.attr("transform", function(d) { return "translate(" + (d.y + 100) + "," + (d.x) + ")"; })
 
 			node.append("circle")
 				.attr("r", 50)
