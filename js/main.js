@@ -2,7 +2,7 @@ var app = app || {};
 
 app.main = (function(){
 
-	console.log('Loading app.');
+	// console.log('Loading app.');
 
 	// ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 	// 		SETUP FUNCTIONS
@@ -39,9 +39,15 @@ app.main = (function(){
 		graph = new Graph();
 		graph.setup(graphData);
 
-		console.log("graph data ", graphData)
+		// console.log("graph data ", graphData)
 
 		loadNYT($('#search-box').val());
+
+		$('#search').hide();
+		$('#article-container').show();
+		$('#article-label').show();
+		$('#graph').show();
+		$('#info').show();
 	};
 
 	var attachEvents = function(){
@@ -53,56 +59,35 @@ app.main = (function(){
 			}
 		});
 
-		$('.article-item').off('click').on('click', function(){
-			var searchCN = this.id
-			console.log("searchCN : ", searchCN);
-			loadConceptNet(searchCN);
-		})
-
-		$('.edge-item').off('click').on('click', function(){
-			var searchNYT = this.id;
-			console.log("searchNYT : ", searchNYT);
-			loadNYT(searchNYT);
-		})
-
-		$('.display').off('click').on('click', function(){
-			
-			var search = $(this).attr("data-search");
-
-			clickedId = $(this).attr("data-id")
-			
-			console.log("clicked ", $(this).attr('data-search'), "from ", $(this).attr("data-type"), "and be a child of ", clickedId)
-			
-			if ($(this).attr('data-type') == "cn") {
-				console.log("search nyt : ", search);
-				loadNYT(search);
-			} else if ($(this).attr('data-type') == "nyt") {
-				console.log("search cn : ", search);
-				loadConceptNet(search);
-			}
-		});	
-			
 		$('circle').off('click').on('click', function(){
 			
 			var search = this.id;
 
 			clickedId = $(this).attr("data-tag");
 			
-			console.log("clicked ", this.id, "clicked Id ", clickedId)
+			// console.log("clicked ", this.id, "clicked Id ", clickedId)
 			
 			if ($(this).attr("data-which") == 'cn') {
-				console.log("search nyt : ", search);
+				// console.log("search nyt : ", search);
 				loadNYT(search);
 			} else if ($(this).attr("data-which") == 'nyt') {
-				console.log("search cn : ", search);
+				// console.log("search cn : ", search);
 				loadConceptNet(search);
 			}
-
 		});
+
+		$('#again').off('click').on('click', function(){
+			$('#article-container').hide();
+			$('#article-label').hide();
+			$('#graph').hide();
+			$('#info').hide();
+			$('#search').show();
+			$('#search-box').val('');
+		})
 	};
 
 	var pushData = function(array, which){
-		console.log("pushing results from ", which)
+		// console.log("pushing results from ", which)
 
 		var children = [];
 
@@ -113,49 +98,42 @@ app.main = (function(){
 		}
 
 		if (which == "nyt"){
-			console.log("rendering results from nyt")
+			$('#article-label').html('Results from New York Times')
+			// console.log("rendering results from nyt")
 			render('articles', 'article-container', 'replace', 
 					{ data: {
 							results: array
 						}
 					});
 		} else if (which == "cn"){
-			console.log("rendering results from nyt")
-			render('edges', 'edge-container', 'replace', 
+			$('#article-label').html('Semantic connections');
+			// console.log("rendering results from nyt")
+			render('edges', 'article-container', 'replace', 
 					{ data: {
 							results: array
 						}
 					});
 		}
 
-		console.log("graph data ", graphData, "id to find ", clickedId, "child data ", children);
+		// console.log("graph data ", graphData, "id to find ", clickedId, "child data ", children);
 		
 		insertById(graphData, clickedId, children, function(updated){
-			console.log("updated data", updated)
+			// console.log("updated data", updated)
 			graph.setup(updated)
 		});
-		// console.log("update graph data ", graphData)
-		
-		// graph.update(updatedData);
-	
-		// render('display', 'display-container', 'replace', 
-		// 	{ data: {
-		// 			results: graphData
-		// 		}
-		// 	});
 
 		attachEvents();
 	}
 
 	function insertById(data, id, children, callback){
-		console.log("data id", data.id, "clicked id ", id);
+		// console.log("data id", data.id, "clicked id ", id);
 	      
 		//Early return
 	    if( data.id == id ){
 	      
 	      data['children'] = children;
 	      
-	      console.log("inserted children ", data);
+	      // console.log("inserted children ", data);
 	      
 	      callback(data);
 
@@ -166,7 +144,7 @@ app.main = (function(){
 	    
 	    for (p in data) {
 	        if( data.hasOwnProperty(p) && typeof data[p] === 'object' && p != 'parent') {
-	        	console.log("looking into data p ", data[p]);
+	        	// console.log("looking into data p ", data[p]);
 
 	            result = insertById(data[p], id, children, callback);
 	            
@@ -188,7 +166,7 @@ app.main = (function(){
 		var obj = {};
 		var w = $('#graph').width()
 		var h = $('#graph').height()
-		console.log(w, h)
+		// console.log(w, h)
 
 		var margin = { top: 20, right: 20, bottom: 20, left: 20 };
 		var width = w - margin.left - margin.right;
@@ -270,7 +248,7 @@ app.main = (function(){
 	// ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	var loadConceptNet = function(searchTerm){
-		console.log("searching concept net for ", searchTerm);
+		// console.log("searching concept net for ", searchTerm);
 
 		var searchConceptNet = 'http://conceptnet5.media.mit.edu/data/5.4/c/en/' + searchTerm + '?filter=/c/en';
 		
@@ -300,14 +278,14 @@ app.main = (function(){
 				}
 			}
 
-			console.log("resultFilter ",  resultFilter);
+			// console.log("resultFilter ",  resultFilter);
 			doubleCheckNYT(0, resultFilter, [])
 
 		});
 	}
 
 	var doubleCheckNYT = function(num,data,array){		// this checks if the id gets results from nyt and removes if not
-		console.log("double checking concept net results against nyt")
+		// console.log("double checking concept net results against nyt")
 		// console.log(array.length, array);
 		if (num < data.length && array.length < 5){
 			if ($.inArray(data[num].id, array) == -1){		// if id is not in array already, search NYT and check for results
@@ -331,7 +309,7 @@ app.main = (function(){
 				doubleCheckNYT(num, data, array);
 			}
 		} else {
-			console.log("done", array)
+			// console.log("done", array)
 			pushData(array, "cn")
 		}
 
@@ -344,7 +322,7 @@ app.main = (function(){
 	var resultsNYT = []
 
 	var loadNYT = function(searchTerm){
-		console.log("searching nyt for ", searchTerm);
+		// console.log("searching nyt for ", searchTerm);
 
 		var searchNYT = 'http://api.nytimes.com/svc/search/v2/articlesearch.json?q='+searchTerm+'&page=0&sort=newest&api-key=b513fe756c28fddfee540182bb4d37a6:1:59936560'
 		
@@ -417,7 +395,7 @@ app.main = (function(){
 	}
 
 	var init = function(){
-		console.log('Initializing app.');
+		// console.log('Initializing app.');
 		attachEvents();
 	};
 

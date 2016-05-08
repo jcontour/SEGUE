@@ -11,13 +11,17 @@
 	</head>
 	<body>
 		<div id="search">
-			<input id="search-box" type="text" placeholder="Search for articles by keyword"/>
+			<div class="title"> SEGUE </div>
+			<div class="subtitle"> Browse articles by semantic connections </div>
+			<input id="search-box" type="text" autofocus="autofocus" placeholder="Choose a keyword to start"/>
 			<button id="search-button">OK</button>
 		</div>
 
-		<!-- <div id="display-container"> </div> -->
+		<div id="info"> 
+			<div class="title" id="again">SEGUE</div>
+		</div>
 		<div id="graph"> </div>
-		<div id="edge-container"> </div>
+		<div id="article-label"> </div>
 		<div id="article-container"> </div>
 
 
@@ -26,10 +30,11 @@
 			<% for(var i=0; i<data.results.length; i++) { %>
 				<div class="article-item" id="<%= data.results[i].id %>">
 					<p>
-						<!-- <a href="<%= data.results[i].web_url%>" target="_blank"> -->
-							<p class="article-title"><%= data.results[i].headline.main %></p>
-							<p class="article-blurb"><%= data.results[i].snippet %></p>
-						<!-- </a> -->
+						<a href="<%= data.results[i].web_url%>" target="_blank">
+							<p class="article-title"><%= data.results[i].headline.main %> </p>
+						</a>
+							<p class="article-blurb"><%= data.results[i].snippet %> </p>
+						
 					</p>
 				</div>
 			<% } %>
@@ -41,8 +46,8 @@
 
 				<div class="edge-item" id="<%= data.results[i].id %>">
 					<p>
-						<p class="article-title"><%= data.results[i].id %></p>
-						<p class="article-blurb"><%= data.results[i].surfaceText %></p>
+						<p class="article-title"><%= data.results[i].id %> </p>
+						<p class="article-blurb"><%= data.results[i].surfaceText %> </p>
 					</p>
 				</div>
 			<% } %>
